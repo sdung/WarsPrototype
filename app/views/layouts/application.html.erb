@@ -2,8 +2,12 @@
 <html>
 <head>
   <title>AdvancedWarsPrototype</title>
-  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <% if params[:controller] == "pages" and params[:action] == "game" %>
+      <%= javascript_include_tag "canvasengine-1.3.2.all.min.js" %>
+  <% else %>
+      <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+      <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <% end %>
   <%= csrf_meta_tags %>
 </head>
 <body>
