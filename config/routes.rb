@@ -1,5 +1,8 @@
 AdvancedWars::Application.routes.draw do
   resources :pages, only: [:index]
+
+  get 'pages/game' => 'pages#game', as: :game
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
