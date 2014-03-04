@@ -5,14 +5,15 @@
   <% if params[:controller] == "pages" and params[:action] == "game" %>
       <%= javascript_include_tag "phaser.min.js" %>
   <% else %>
-      <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+      <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
       <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <% end %>
   <%= csrf_meta_tags %>
 </head>
 <body>
-
-<%= yield %>
-
+<div id="wrapper">
+  <%= render 'layouts/header' %>
+  <%= yield %>
+</div>
 </body>
 </html>
