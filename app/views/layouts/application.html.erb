@@ -4,6 +4,7 @@
   <title>AdvancedWarsPrototype</title>
   <% if params[:controller] == "pages" and params[:action] == "game" %>
       <%= javascript_include_tag "phaser.min.js" %>
+      <%= javascript_include_tag @javascript_file if @javascript_file %>
   <% else %>
       <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
       <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
