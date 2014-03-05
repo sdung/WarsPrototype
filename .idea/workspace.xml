@@ -8,7 +8,7 @@
     <file path="/routes.rb" changelist="afb6e1f9-c423-4538-a234-d069e90a5839" time="1393904405737" ignored="false" />
     <file path="/application.html.erb" changelist="afb6e1f9-c423-4538-a234-d069e90a5839" time="1393979701360" ignored="false" />
     <file path="/style.css.scss" changelist="afb6e1f9-c423-4538-a234-d069e90a5839" time="1393904735439" ignored="false" />
-    <file path="/_header.html.erb" changelist="afb6e1f9-c423-4538-a234-d069e90a5839" time="1393906274840" ignored="false" />
+    <file path="/_header.html.erb" changelist="afb6e1f9-c423-4538-a234-d069e90a5839" time="1393985819416" ignored="false" />
     <file path="/pages_controller.rb" changelist="afb6e1f9-c423-4538-a234-d069e90a5839" time="1393980532480" ignored="false" />
     <file path="/flappy.html.erb" changelist="afb6e1f9-c423-4538-a234-d069e90a5839" time="1393904592716" ignored="false" />
     <file path="/main.js" changelist="afb6e1f9-c423-4538-a234-d069e90a5839" time="1393905582178" ignored="false" />
@@ -34,10 +34,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="flappy_isaac.js.erb" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="flappy_isaac.js.erb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/assets/javascripts/flappy_isaac.js.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="46" selection-start="855" selection-end="855" vertical-scroll-proportion="1.1147541">
+            <state line="24" column="46" selection-start="855" selection-end="855" vertical-scroll-proportion="-15.692307">
               <folding />
             </state>
           </provider>
@@ -79,10 +79,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="_header.html.erb" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="_header.html.erb" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/views/layouts/_header.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="9" selection-start="235" selection-end="235" vertical-scroll-proportion="-5.8846154">
+            <state line="3" column="9" selection-start="81" selection-end="81" vertical-scroll-proportion="0.13934426">
               <folding />
             </state>
           </provider>
@@ -114,11 +114,11 @@
         <option value="$PROJECT_DIR$/app/assets/stylesheets/style.css.scss" />
         <option value="$PROJECT_DIR$/lib/assets/javascripts/main.js" />
         <option value="$PROJECT_DIR$/lib/assets/javascripts/main.js.erb" />
-        <option value="$PROJECT_DIR$/app/views/layouts/_header.html.erb" />
         <option value="$PROJECT_DIR$/app/views/pages/flappy.html.erb" />
         <option value="$PROJECT_DIR$/app/views/layouts/application.html.erb" />
         <option value="$PROJECT_DIR$/lib/assets/javascripts/flappy_isaac.js.erb" />
         <option value="$PROJECT_DIR$/app/controllers/pages_controller.rb" />
+        <option value="$PROJECT_DIR$/app/views/layouts/_header.html.erb" />
       </list>
     </option>
   </component>
@@ -130,8 +130,8 @@
     <option name="CUSTOM_FILTER" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="55" />
-    <option name="y" value="24" />
+    <option name="x" value="412" />
+    <option name="y" value="65" />
     <option name="width" value="1394" />
     <option name="height" value="944" />
   </component>
@@ -529,7 +529,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="55" y="24" width="1394" height="944" extended-state="1" />
+    <frame x="412" y="65" width="1394" height="944" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -649,21 +649,9 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Desktop/basic_template/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="65" selection-start="207" selection-end="325" vertical-scroll-proportion="-10.461538" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/views/pages/index.html.erb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="37" column="5" selection-start="2751" selection-end="2751" vertical-scroll-proportion="-24.038462">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/layouts/_header.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="9" selection-start="235" selection-end="235" vertical-scroll-proportion="-5.8846154">
           <folding />
         </state>
       </provider>
@@ -687,13 +675,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/layouts/application.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="56" selection-start="596" selection-end="596" vertical-scroll-proportion="-12.423077">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/views/pages/flappy.html.erb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="6" column="0" selection-start="55" selection-end="100" vertical-scroll-proportion="-3.9230769">
@@ -703,7 +684,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/assets/javascripts/flappy_isaac.js.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="46" selection-start="855" selection-end="855" vertical-scroll-proportion="1.1147541">
+        <state line="24" column="46" selection-start="855" selection-end="855" vertical-scroll-proportion="-15.692307">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/layouts/application.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="56" selection-start="596" selection-end="596" vertical-scroll-proportion="-12.423077">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/layouts/_header.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="9" selection-start="81" selection-end="81" vertical-scroll-proportion="0.13934426">
           <folding />
         </state>
       </provider>
