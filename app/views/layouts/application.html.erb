@@ -6,8 +6,8 @@
   <%= stylesheet_link_tag "application", media: "all" %>
   <%= javascript_include_tag "application" %>
   <% if params[:controller] == "games" %>
-      <%= javascript_include_tag @javascript_file if !@javascript_file.nil? %>
       <%= javascript_include_tag "phaser.min.js"%>
+      <%= javascript_include_tag @javascript_file if !@javascript_file.nil? %>
   <% end %>
   <%= csrf_meta_tags %>
 </head>
