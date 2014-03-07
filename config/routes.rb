@@ -1,8 +1,9 @@
 AdvancedWars::Application.routes.draw do
+
+
   resources :pages, only: [:index]
 
-  get 'pages/game' => 'pages#game', as: :game
-  get 'pages/flappy' => 'pages#flappy', as: :flappy
+  get 'games/flappy' => 'games#flappy', as: :flappy
 
   get 'pages/about' => 'pages#about', as: :about
   get 'pages/contact' => 'pages#contact', as: :contact
