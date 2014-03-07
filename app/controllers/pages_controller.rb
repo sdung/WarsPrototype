@@ -8,6 +8,14 @@ class PagesController < ApplicationController
 
   end
 
+  def game
+
+  end
+
+  def flappy
+    @javascript_file = "flappy_isaac"
+  end
+
   def about
 
   end
