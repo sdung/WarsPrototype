@@ -3,12 +3,12 @@
 <head>
   <title>AdvancedWarsPrototype</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <% if params[:controller] == "pages" and (params[:action] == "game" || params[:action] == "flappy") %>
-      <%= javascript_include_tag "phaser.min.js" %>
-      <%= javascript_include_tag @javascript_file if @javascript_file %>
+  <%= stylesheet_link_tag "application", media: "all" %>
+  <%= javascript_include_tag "application" %>
+  <% if params[:controller] == "games" %>
+      <%= javascript_include_tag @javascript_file if !@javascript_file.nil? %>
+      <%= javascript_include_tag "phaser.min.js"%>
   <% end %>
-  <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
-  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
 </head>
 <body style class>
