@@ -16,4 +16,11 @@ class PagesController < ApplicationController
     @javascript_file = "flappy_isaac"
   end
 
+  def about
+
+  end
+
+  def contact
+
+  end
 end

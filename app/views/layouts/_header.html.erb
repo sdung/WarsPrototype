@@ -1,11 +1,29 @@
-<header id="header">
+<div class="navbar navbar-default navbar-fixed-top">
   <div class="container">
-    <nav id="main_menu">
-      <ul>
-        <li><%= link_to "Home", root_path %></li>
-        <li><a href="#">Blog</a></>
-        <li><%= link_to "Flappy Isaacs", flappy_path %></li>
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <%= link_to "Steve & Isaac's Site", root_path, :class => "navbar-brand" %>
+    </div>
+
+    <div class="navbar-collapse collapse navbar-responsive-collapse">
+      <ul class="nav navbar-nav">
+        <%= li_active_if index_active, link_to('Home', root_path) %>
+        <li><a href="#">Blog</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Projects <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+           <%= render 'layouts/dropdown_items' %>
+          </ul>
+        </li>
       </ul>
-    </nav>
+      <ul class="nav navbar-nav navbar-right">
+        <%= li_active_if about_active, link_to("About", about_path) %>
+        <%= li_active_if contact_active, link_to("Contact", contact_path) %>
+      </ul>
+    </div>
   </div>
-</header>
+</div>
