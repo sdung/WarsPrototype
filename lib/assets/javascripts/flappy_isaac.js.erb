@@ -1,6 +1,27 @@
 // Initialize Phaser, and creates a 400x490px game
 var game = new Phaser.Game(400, 490, Phaser.AUTO, 'game_div');
 
+//created load state
+var start_state = {    
+    //makes screen that sky blue color
+    preload: function() {
+        this.game.stage.backgroundColor = '#71c5cf';
+    },
+
+    //added label 
+    create: function() {
+        label = game.add.text(170, 100, 'press the space to start', { font: '25px Arial', fill: '#fff' });
+        label.anchor.setTo(0.5, 0.5); 
+    },
+
+    update: function() {
+        //checks if spacebar has been pressed if so start main game state (see bottom for game states)
+        if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))  
+            game.state.start('main');
+    },
+
+};
+
 // Creates a new 'main' state that will contain the game
 var main_state = {
 
@@ -75,8 +96,8 @@ var main_state = {
 
 // Restart the game
     restart_game: function () {
-        // Start the 'main' state, which restarts the game
-        this.game.state.start('main');
+        // Start the 'load' state, which restarts the game
+        this.game.state.start('start');
 
         this.game.time.events.remove(this.timer);
     },
@@ -107,6 +128,7 @@ var main_state = {
     },
 };
 
-// Add and start the 'main' state to start the game
+// Add the start and main states and start the 'start' state to start the game
+game.state.add('start', start_state);
 game.state.add('main', main_state);
-game.state.start('main');
+game.state.start('start');
