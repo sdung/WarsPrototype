@@ -1,22 +1,25 @@
 // Initialize Phaser, and creates a 400x490px game
 var game = new Phaser.Game(400, 490, Phaser.AUTO, 'game_div');
-
+var score = 0;
 //created load state
-var start_state = {    
+var start_state = {
     //makes screen that sky blue color
-    preload: function() {
+    preload: function () {
         this.game.stage.backgroundColor = '#71c5cf';
     },
 
     //added label 
-    create: function() {
-        label = game.add.text(170, 100, 'press the space to start', { font: '25px Arial', fill: '#fff' });
-        label.anchor.setTo(0.5, 0.5); 
+    create: function () {
+        label = game.add.text(game.width / 2, 100, 'Press Space or Click to Begin', { font: '25px Arial', fill: '#fff' });
+        label.anchor.setTo(0.5, 0.5);
     },
 
-    update: function() {
+    update: function () {
         //checks if spacebar has been pressed if so start main game state (see bottom for game states)
-        if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))  
+        if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
+            game.state.start('main');
+
+        if (game.input.mousePointer.isDown)
             game.state.start('main');
     },
 
@@ -35,6 +38,7 @@ var main_state = {
     },
 
     create: function () {
+
         // Display the bird on the screen
         this.bird = this.game.add.sprite(100, 245, 'bird');
         this.bird.anchor.setTo(-0.2, 0.5);
@@ -49,9 +53,11 @@ var main_state = {
         var space_key = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         space_key.onDown.add(this.jump, this);
 
+        this.downHandler = this.game.input.onDown.add(this.jump, this);
+
         this.timer = this.game.time.events.loop(1500, this.add_row_of_pipes, this);
 
-        this.score = 0;
+        score = 0;
         var style = { font: "30px Arial", fill: "#ffffff" };
         this.label_score = this.game.add.text(20, 20, "0", style);
     },
@@ -59,7 +65,7 @@ var main_state = {
     update: function () {
         // If the bird is out of the world (too high or too low), call the 'restart_game' function
         if (this.bird.inWorld == false)
-            this.restart_game();
+            this.end_game();
 
         this.game.physics.overlap(this.bird, this.pipes, this.hit_pipe, null, this);
 
@@ -95,9 +101,9 @@ var main_state = {
     },
 
 // Restart the game
-    restart_game: function () {
+    end_game: function () {
         // Start the 'load' state, which restarts the game
-        this.game.state.start('start');
+        this.game.state.start('over');
 
         this.game.time.events.remove(this.timer);
     },
@@ -115,8 +121,8 @@ var main_state = {
         // Kill the pipe when it's no longer visible
         pipe.outOfBoundsKill = true;
 
-        this.score += 1;
-        this.label_score.content = this.score;
+        score += 1;
+        this.label_score.content = score;
     },
 
     add_row_of_pipes: function () {
@@ -128,7 +134,40 @@ var main_state = {
     },
 };
 
+//creates game over state
+var game_over_state = {
+    //makes screen that sky blue color
+    preload: function () {
+        this.game.stage.backgroundColor = '#71c5cf';
+    },
+
+    //added label
+    create: function () {
+        game_over_label = game.add.text(game.width / 2, 100, 'GAME OVER', { font: '50px Arial', fill: '#fff' });
+        game_over_label.anchor.setTo(0.5, 0.5);
+
+        text_label = game.add.text(game.width / 2, 150, 'You achieved a score of:', { font: '25px Arial', fill: '#fff' });
+        text_label.anchor.setTo(0.5, 0.5);
+
+        if (score === 0)
+            high_score_label = game.add.text(game.width / 2, game.height / 2, "0", { font: '50px Arial', fill: '#fff' });
+
+        else
+            high_score_label = game.add.text(game.width / 2, game.height / 2, score, { font: '50px Arial', fill: '#fff' });
+
+        high_score_label.anchor.setTo(0.5, 0.5);
+    },
+
+    update: function () {
+        //checks if spacebar has been pressed if so start main game state (see bottom for game states)
+        if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
+            game.state.start('main');
+    },
+
+};
+
 // Add the start and main states and start the 'start' state to start the game
 game.state.add('start', start_state);
 game.state.add('main', main_state);
+game.state.add('over', game_over_state);
 game.state.start('start');
