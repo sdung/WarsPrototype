@@ -1,17 +1,42 @@
-// Initialize Phaser, and creates a 400x490px game
+// Initialize Phaser
 var game = new Phaser.Game(400, 490, Phaser.AUTO, 'game_div');
+
+//initialize score
 var score = 0;
+
+//initialize text styling for labels
+var big_style = {
+    font: "50px  Arial",
+    fill: "#ffffff"
+}
+
+var style = {
+    font: "25px Arial",
+    fill: "#ffffff"
+};
+
 //created load state
 var start_state = {
     //makes screen that sky blue color
     preload: function () {
         this.game.stage.backgroundColor = '#71c5cf';
+        // Load the bird sprite
+        this.game.load.image('bird', '<%= asset_path 'isaac.png' %>');
+        this.game.load.image('invisible_pipe', '<%= asset_path 'bird.png' %>');
+        this.game.load.image('pipe', '<%= asset_path 'pipe.png' %>');
     },
 
     //added label 
     create: function () {
-        label = game.add.text(game.width / 2, 100, 'Press Space or Click to Begin', { font: '25px Arial', fill: '#fff' });
+        welcome_label = game.add.text(game.width / 2, game.width / 3, 'Flappy Isaac', big_style);
+        welcome_label.anchor.setTo(0.5, 0.5);
+
+        label = game.add.text(game.width / 2, 300 , 'Press Space or Click to Begin', style);
         label.anchor.setTo(0.5, 0.5);
+
+        // Display the bird on the screen
+        this.bird = this.game.add.sprite(game.width / 2, 200, 'bird');
+        this.bird.anchor.setTo(0.5, 0.5);
     },
 
     update: function () {
@@ -29,25 +54,28 @@ var start_state = {
 var main_state = {
 
     preload: function () {
-        // Change the background color of the game
-        this.game.stage.backgroundColor = '#71c5cf';
 
-        // Load the bird sprite
-        this.game.load.image('bird', '<%= asset_path 'isaac.png' %>');
-        this.game.load.image('pipe', '<%= asset_path 'pipe.png' %>');
     },
 
     create: function () {
+        // Change the background color of the game
+        this.bird = this.game.add.sprite(game.width / 2, 200, 'bird');
+        this.bird.anchor.setTo(0.5, 0.5);
 
-        // Display the bird on the screen
-        this.bird = this.game.add.sprite(100, 245, 'bird');
-        this.bird.anchor.setTo(-0.2, 0.5);
+        var flyback = this.game.add.tween(this.bird);
+
+        // Set the animation to change the angle of the sprite to -20° in 100 milliseconds
+        flyback.to({x: 100}, 500);
+        flyback.start();
 
         // Add gravity to the bird to make it fall
         this.bird.body.gravity.y = 1000;
 
         this.pipes = game.add.group();
         this.pipes.createMultiple(20, 'pipe');
+
+        this.invisible_pipes = game.add.group();
+        this.invisible_pipes.createMultiple(20, 'invisible_pipe');
 
         // Call the 'jump' function when the spacekey is hit
         var space_key = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -57,8 +85,9 @@ var main_state = {
 
         this.timer = this.game.time.events.loop(1500, this.add_row_of_pipes, this);
 
+        //reset score
         score = 0;
-        var style = { font: "30px Arial", fill: "#ffffff" };
+
         this.label_score = this.game.add.text(20, 20, "0", style);
     },
 
@@ -68,6 +97,8 @@ var main_state = {
             this.end_game();
 
         this.game.physics.overlap(this.bird, this.pipes, this.hit_pipe, null, this);
+
+        this.game.physics.overlap(this.bird, this.invisible_pipes, this.hit_invisible_pipe, null, this);
 
         if (this.bird.angle < 20)
             this.bird.angle++
@@ -80,6 +111,16 @@ var main_state = {
         this.pipes.forEachAlive(function (p) {
             p.body.velocity.x = 0;
         }, this);
+
+        this.invisible_pipes.forEachAlive(function (p) {
+            p.body.velocity.x = 0;
+        }, this);
+    },
+
+    hit_invisible_pipe: function (_, _invisible_pipe) {
+        _invisible_pipe.kill();
+        score += .5;
+        this.label_score.content = score;
     },
 
 // Make the bird jump
@@ -120,9 +161,20 @@ var main_state = {
 
         // Kill the pipe when it's no longer visible
         pipe.outOfBoundsKill = true;
+    },
 
-        score += 1;
-        this.label_score.content = score;
+    add_invisible_pipe: function (x, y) {
+        // Get the first dead pipe of our group
+        var invisible_pipe = this.invisible_pipes.getFirstDead();
+
+        // Set the new position of the pipe
+        invisible_pipe.reset(x, y);
+
+        // Add velocity to the pipe to make it move left
+        invisible_pipe.body.velocity.x = -200;
+
+        // Kill the pipe when it's no longer visible
+        invisible_pipe.outOfBoundsKill = true;
     },
 
     add_row_of_pipes: function () {
@@ -131,6 +183,8 @@ var main_state = {
         for (var i = 0; i < 8; i++)
             if (i != hole && i != hole + 1)
                 this.add_one_pipe(400, i * 60 + 10);
+            else
+                this.add_invisible_pipe(400, i*60 + 10);
     },
 };
 
@@ -143,17 +197,16 @@ var game_over_state = {
 
     //added label
     create: function () {
-        game_over_label = game.add.text(game.width / 2, 100, 'GAME OVER', { font: '50px Arial', fill: '#fff' });
+        game_over_label = game.add.text(game.width / 2, 100, 'GAME OVER', big_style);
         game_over_label.anchor.setTo(0.5, 0.5);
 
-        text_label = game.add.text(game.width / 2, 150, 'You achieved a score of:', { font: '25px Arial', fill: '#fff' });
+        text_label = game.add.text(game.width / 2, 150, 'You achieved a score of:', style);
         text_label.anchor.setTo(0.5, 0.5);
 
         if (score === 0)
-            high_score_label = game.add.text(game.width / 2, game.height / 2, "0", { font: '50px Arial', fill: '#fff' });
-
+            high_score_label = game.add.text(game.width / 2, game.height / 2, "0", style);
         else
-            high_score_label = game.add.text(game.width / 2, game.height / 2, score, { font: '50px Arial', fill: '#fff' });
+            high_score_label = game.add.text(game.width / 2, game.height / 2, score, style);
 
         high_score_label.anchor.setTo(0.5, 0.5);
     },
@@ -161,6 +214,9 @@ var game_over_state = {
     update: function () {
         //checks if spacebar has been pressed if so start main game state (see bottom for game states)
         if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
+            game.state.start('main');
+
+        if (game.input.mousePointer.isDown)
             game.state.start('main');
     },
 
