@@ -13,7 +13,10 @@ var big_style = {
 var style = {
     font: "25px Arial",
     fill: "#ffffff"
-};
+}
+
+var debug_label;
+var current_pipe;
 
 //created load state
 var start_state = {
@@ -54,10 +57,12 @@ var start_state = {
 var main_state = {
 
     preload: function () {
-
+        this.current_pipe = 0;
     },
 
     create: function () {
+        this.debug_label = game.add.text(game.width/2 -20, 20, this.current_pipe.toString(), style);
+
         // Change the background color of the game
         this.bird = this.game.add.sprite(game.width / 2, 200, 'bird');
         this.bird.anchor.setTo(0.5, 0.5);
@@ -75,7 +80,7 @@ var main_state = {
         this.pipes.createMultiple(20, 'pipe');
 
         this.invisible_pipes = game.add.group();
-        this.invisible_pipes.createMultiple(3, 'invisible_pipe');
+        this.invisible_pipes.createMultiple(2, 'invisible_pipe');
 
         // Call the 'jump' function when the spacekey is hit
         var space_key = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -89,6 +94,7 @@ var main_state = {
         score = 0;
 
         this.label_score = this.game.add.text(20, 20, "0", style);
+
     },
 
     update: function () {
@@ -105,20 +111,21 @@ var main_state = {
     },
 
     hit_pipe: function () {
-        this.bird.alive = false;
-        this.game.time.events.remove(this.timer);
-
-        this.pipes.forEachAlive(function (p) {
-            p.body.velocity.x = 0;
-        }, this);
-
-        this.invisible_pipes.forEachAlive(function (p) {
-            p.body.velocity.x = 0;
-        }, this);
+//        this.bird.alive = false;
+//        this.game.time.events.remove(this.timer);
+//
+//        this.pipes.forEachAlive(function (p) {
+//            p.body.velocity.x = 0;
+//        }, this);
+//
+//        this.invisible_pipes.forEachAlive(function (p) {
+//            p.body.velocity.x = 0;
+//        }, this);
     },
 
     hit_invisible_pipe: function (_, _invisible_pipe) {
         _invisible_pipe.kill();
+
         score += 1;
         this.label_score.content = score;
     },
@@ -163,9 +170,11 @@ var main_state = {
         pipe.outOfBoundsKill = true;
     },
 
-    add_invisible_pipe: function (x, y) {
+    add_invisible_pipe: function (x, y, z) {
+        this.debug_label.content = "Just created " +  this.current_pipe.toString();
+
         // Get the first dead pipe of our group
-        var invisible_pipe = this.invisible_pipes.getFirstDead();
+        var invisible_pipe = this.invisible_pipes.getAt(z);
 
         // Set the new position of the pipe
         invisible_pipe.reset(x, y);
@@ -175,6 +184,11 @@ var main_state = {
 
         // Kill the pipe when it's no longer visible
         invisible_pipe.outOfBoundsKill = true;
+
+        if (this.current_pipe == 1)
+            this.current_pipe = 0;
+        else
+            this.current_pipe++;
     },
 
     add_row_of_pipes: function () {
@@ -184,7 +198,7 @@ var main_state = {
             if (i != hole && i != hole + 1)
                 this.add_one_pipe(400, i * 60 + 10);
             else if (i == hole)
-                this.add_invisible_pipe(400, i*60 + 35);
+                this.add_invisible_pipe(400, i*60 + 35, this.current_pipe);
     },
 };
 
