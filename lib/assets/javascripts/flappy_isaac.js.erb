@@ -75,7 +75,7 @@ var main_state = {
         this.pipes.createMultiple(20, 'pipe');
 
         this.invisible_pipes = game.add.group();
-        this.invisible_pipes.createMultiple(20, 'invisible_pipe');
+        this.invisible_pipes.createMultiple(3, 'invisible_pipe');
 
         // Call the 'jump' function when the spacekey is hit
         var space_key = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -119,7 +119,7 @@ var main_state = {
 
     hit_invisible_pipe: function (_, _invisible_pipe) {
         _invisible_pipe.kill();
-        score += .5;
+        score += 1;
         this.label_score.content = score;
     },
 
@@ -183,8 +183,8 @@ var main_state = {
         for (var i = 0; i < 8; i++)
             if (i != hole && i != hole + 1)
                 this.add_one_pipe(400, i * 60 + 10);
-            else
-                this.add_invisible_pipe(400, i*60 + 10);
+            else if (i == hole)
+                this.add_invisible_pipe(400, i*60 + 35);
     },
 };
 
