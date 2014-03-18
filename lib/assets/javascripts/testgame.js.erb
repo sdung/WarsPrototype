@@ -1,5 +1,5 @@
 // Initialize Phaser
-var game = new Phaser.Game(400, 490, Phaser.AUTO, 'game_div');
+var game = new Phaser.Game(400, 490, Phaser.AUTO, 'test_game_div');
 
 //initialize score
 var score = 0;
@@ -19,33 +19,16 @@ var style = {
 var start_state = {
     //makes screen that sky blue color
     preload: function () {
-        this.game.stage.backgroundColor = '#71c5cf';
-        // Load the bird sprite
-        this.game.load.image('bird', '<%= asset_path 'isaac.png' %>');
-        this.game.load.image('invisible_pipe', '<%= asset_path 'bird.png' %>');
-        this.game.load.image('pipe', '<%= asset_path 'pipe.png' %>');
+        
     },
 
     //added label 
     create: function () {
-        welcome_label = game.add.text(game.width / 2, game.width / 3, 'Flappy Isaac', big_style);
-        welcome_label.anchor.setTo(0.5, 0.5);
-
-        label = game.add.text(game.width / 2, 300 , 'Press Space or Click to Begin', style);
-        label.anchor.setTo(0.5, 0.5);
-
-        // Display the bird on the screen
-        this.bird = this.game.add.sprite(game.width / 2, 200, 'bird');
-        this.bird.anchor.setTo(0.5, 0.5);
+        
     },
 
     update: function () {
-        //checks if spacebar has been pressed if so start main game state (see bottom for game states)
-        if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
-            game.state.start('main');
-
-        if (game.input.mousePointer.isDown)
-            game.state.start('main');
+        
     },
 
 };
