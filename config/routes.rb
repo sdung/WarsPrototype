@@ -5,6 +5,8 @@ AdvancedWars::Application.routes.draw do
 
   get 'games/flappy' => 'games#flappy', as: :flappy
 
+  get 'games/testgame' => 'games#testgame', as: :testgame
+
   get 'pages/about' => 'pages#about', as: :about
   get 'pages/contact' => 'pages#contact', as: :contact
   # The priority is based upon order of creation: first created -> highest priority.

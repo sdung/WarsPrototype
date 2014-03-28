@@ -1,214 +1,83 @@
 // Initialize Phaser
-var game = new Phaser.Game(400, 490, Phaser.AUTO, 'test_game_div');
+var game = new Phaser.Game(480, 320, Phaser.AUTO, 'test_game_div');
 
-//initialize score
-var score = 0;
-
-//initialize text styling for labels
-var big_style = {
-    font: "50px  Arial",
-    fill: "#ffffff"
-}
-
-var style = {
-    font: "25px Arial",
-    fill: "#ffffff"
-};
-
+//public vars
+var box;
 //created load state
 var start_state = {
-    //makes screen that sky blue color
     preload: function () {
-        
+        this.game.stage.backgroundColor = '#00FF00';
+        this.game.load.image('box', '<%= asset_path 'pipe.png' %>');
+        this.game.load.image('selectedbox', '<%= asset_path 'selectedbox.png' %>');
     },
+
+    
 
     //added label 
     create: function () {
-        
+        //label = game.add.text(game.width / 2, 300 , 'Press Space or Click to Begin', style);
+        this.box = this.game.add.sprite(game.world.centerX, game.world.centerY, 'box');
+
+        this.game.input.onDown.add(changeBox, this);
+
+    },
+
+    changeBox: function() {
+        this.box.loadTexture('selectedbox', 0);
     },
 
     update: function () {
-        
+        //if (game.input.mousePointer.isDown)
+         //   game.state.start('main');
     },
 
 };
 
 // Creates a new 'main' state that will contain the game
 var main_state = {
-
-    preload: function () {
+    preload: function(){
 
     },
 
-    create: function () {
-        // Change the background color of the game
-        this.bird = this.game.add.sprite(game.width / 2, 200, 'bird');
-        this.bird.anchor.setTo(0.5, 0.5);
-
-        var flyback = this.game.add.tween(this.bird);
-
-        // Set the animation to change the angle of the sprite to -20° in 100 milliseconds
-        flyback.to({x: 100}, 500);
-        flyback.start();
-
-        // Add gravity to the bird to make it fall
-        this.bird.body.gravity.y = 1000;
-
-        this.pipes = game.add.group();
-        this.pipes.createMultiple(20, 'pipe');
-
-        this.invisible_pipes = game.add.group();
-        this.invisible_pipes.createMultiple(3, 'invisible_pipe');
-
-        // Call the 'jump' function when the spacekey is hit
-        var space_key = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-        space_key.onDown.add(this.jump, this);
-
-        this.downHandler = this.game.input.onDown.add(this.jump, this);
-
-        this.timer = this.game.time.events.loop(1500, this.add_row_of_pipes, this);
-
-        //reset score
-        score = 0;
-
-        this.label_score = this.game.add.text(20, 20, "0", style);
-    },
-
-    update: function () {
-        // If the bird is out of the world (too high or too low), call the 'restart_game' function
-        if (this.bird.inWorld == false)
-            this.end_game();
-
-        //this.game.physics.overlap(this.bird, this.pipes, this.hit_pipe, null, this);
-
-        this.game.physics.overlap(this.bird, this.invisible_pipes, this.hit_invisible_pipe, null, this);
-
-        if (this.bird.angle < 20)
-            this.bird.angle++
-    },
-
-    hit_pipe: function () {
-        this.bird.alive = false;
-        this.game.time.events.remove(this.timer);
-
-        this.pipes.forEachAlive(function (p) {
-            p.body.velocity.x = 0;
-        }, this);
-
-        this.invisible_pipes.forEachAlive(function (p) {
-            p.body.velocity.x = 0;
-        }, this);
-    },
-
-    hit_invisible_pipe: function (_, _invisible_pipe) {
+    create: function(){
         
-        _invisible_pipe.kill();
-        score += 1;
-        this.label_score.content = score;
+
     },
 
-// Make the bird jump
-    jump: function () {
-        if (this.bird.alive == false)
-            return;
+    update: function(){
 
-        // Add a vertical velocity to the bird
-        this.bird.body.velocity.y = -350;
 
-        // create an animation on the bird
-        var animation = this.game.add.tween(this.bird);
-
-        // Set the animation to change the angle of the sprite to -20° in 100 milliseconds
-        animation.to({angle: -20}, 100);
-
-        // And start the animation
-        animation.start();
     },
 
-// Restart the game
-    end_game: function () {
-        // Start the 'load' state, which restarts the game
-        this.game.state.start('over');
 
-        this.game.time.events.remove(this.timer);
-    },
 
-    add_one_pipe: function (x, y) {
-        // Get the first dead pipe of our group
-        var pipe = this.pipes.getFirstDead();
-
-        // Set the new position of the pipe
-        pipe.reset(x, y);
-
-        // Add velocity to the pipe to make it move left
-        pipe.body.velocity.x = -200;
-
-        // Kill the pipe when it's no longer visible
-        pipe.outOfBoundsKill = true;
-    },
-
-    add_invisible_pipe: function (x, y) {
-        // Get the first dead pipe of our group
-        var invisible_pipe = this.invisible_pipes.getFirstDead();
-
-        // Set the new position of the pipe
-        invisible_pipe.reset(x, y);
-
-        // Add velocity to the pipe to make it move left
-        invisible_pipe.body.velocity.x = -200;
-
-        // Kill the pipe when it's no longer visible
-        invisible_pipe.outOfBoundsKill = true;
-    },
-
-    add_row_of_pipes: function () {
-        var hole = Math.floor(Math.random() * 5) + 1;
-
-        for (var i = 0; i < 8; i++){
-            if (i != hole && i != hole + 1)
-                this.add_one_pipe(400, i * 60 + 10);
-            if (i == hole)
-                this.add_invisible_pipe(400, i * 60 + 35);
-        }
-    },
 };
 
 //creates game over state
 var game_over_state = {
     //makes screen that sky blue color
     preload: function () {
-        this.game.stage.backgroundColor = '#71c5cf';
+        game.stage.backgroundColor = '#00FF00';
     },
 
     //added label
     create: function () {
-        game_over_label = game.add.text(game.width / 2, 100, 'GAME OVER', big_style);
-        game_over_label.anchor.setTo(0.5, 0.5);
-
-        text_label = game.add.text(game.width / 2, 150, 'You achieved a score of:', style);
-        text_label.anchor.setTo(0.5, 0.5);
-
-        if (score === 0)
-            high_score_label = game.add.text(game.width / 2, game.height / 2, "0", style);
-        else
-            high_score_label = game.add.text(game.width / 2, game.height / 2, score, style);
-
-        high_score_label.anchor.setTo(0.5, 0.5);
+        
     },
 
     update: function () {
         //checks if spacebar has been pressed if so start main game state (see bottom for game states)
-        if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
-            game.state.start('main');
-
-        if (game.input.mousePointer.isDown)
-            game.state.start('main');
+       
     },
 
 };
 
-// Add the start and main states and start the 'start' state to start the game
+//game states
 game.state.add('start', start_state);
 game.state.add('main', main_state);
 game.state.add('over', game_over_state);
 game.state.start('start');
+
+
+
+
