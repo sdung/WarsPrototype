@@ -3,6 +3,7 @@ var game = new Phaser.Game(480, 320, Phaser.AUTO, 'test_game_div');
 
 //public vars
 var box;
+var clicked = false;
 //created load state
 var start_state = {
     preload: function () {
@@ -18,12 +19,25 @@ var start_state = {
         //label = game.add.text(game.width / 2, 300 , 'Press Space or Click to Begin', style);
         this.box = this.game.add.sprite(game.world.centerX, game.world.centerY, 'box');
 
-        this.game.input.onDown.add(changeBox, this);
+        this.box.inputEnabled = true;
+
+        var space_key = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        space_key.onDown.add(this.select, this);
+
+
+        this.box.events.onInputDown.add(this.select, this);
 
     },
 
-    changeBox: function() {
-        this.box.loadTexture('selectedbox', 0);
+    select: function() {
+        
+        if (clicked){
+            this.box.loadTexture('box', 0);
+            clicked = false;
+        }else{
+            this.box.loadTexture('selectedbox', 0);
+            clicked = true;
+        }
     },
 
     update: function () {
