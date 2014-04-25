@@ -2,9 +2,10 @@
 var game = new Phaser.Game(320, 480, Phaser.AUTO, 'test_game_div');
 
 //public vars
-var box;
+var bombSpeed;
 var bombweight;
-
+var score = 0;
+var scoreText;
 
 //initialize text styling for labels
 var big_style = {
@@ -22,7 +23,7 @@ var style = {
 var start_state = {
     preload: function(){
         this.game.stage.backgroundColor = 'FFFFFF';
-        this.game.load.image('bomb1', '<%= asset_path '10lbsBomb.png' %>');
+        this.game.load.image('bomb', '<%= asset_path '10lbsBomb.png' %>');
     },
 
     create: function(){
@@ -33,6 +34,8 @@ var start_state = {
 
         label = game.add.text(game.width / 2, 300 , 'Click to Begin', style);
         label.anchor.setTo(0.5, 0.5);
+
+
 
     },
 
@@ -46,53 +49,67 @@ var start_state = {
 
 // Creates a new 'main' state that will contain the game
 var main_state = {
-       
-
     //added label 
     create: function () {
-        //label = game.add.text(game.width / 2, 300 , 'Press Space or Click to Begin', style);
-        this.bomb1 = this.game.add.sprite(game.world.centerX - 50, game.world.centerY - 100, 'bomb1');
+        //enable Physics
+        game.physics.startSystem(Phaser.Physics.ARCADE);
 
-        this.bomb1.inputEnabled = true;
+        //create bomb sprite
+        bomb = game.add.sprite(game.world.centerX - 50, game.world.centerY - 100, 'bomb');
 
-        // Add gravity to the bomb to make it fall
-        this.bomb1.body.gravity.y = 1000;
+        
+        
+        bomb.inputEnabled = true;
 
-        var space_key = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-        space_key.onDown.add(this.jump, this);
 
-        this.bomb1.checkWorldBounds = true;
-        this.game.physics.enable(this.bomb1, Phaser.Physics.ARCADE);
+        //enable physics on the bomb
+        game.physics.arcade.enable(bomb);
 
-        this.bomb1.body.collideWorldBounds = true;
+        //player physics properties
+        bomb.body.bounce.y = 0.2;
+        bomb.body.gravity.y = 1000;
+        bomb.body.collideWorldBounds = true; 
 
-        this.bomb1.events.onInputDown.add(this.jump, this);
+        scoreText = game.add.text(16, 16, 'Score: 0', style);
 
     },
 
-    update: function () {
-        //if (game.input.mousePointer.isDown)
-         //   game.state.start('main');
+    newBomb: function(){
+        bombs = game.add.group();
 
+        //every 10 points add a new bomb
+        if ((10 % score) == 0){
+            var newbomb = bombs.create((100 + (Math.random * 300)), 250, 'newbomb');
+
+            newbomb.body.gravity.y = 1000;
+
+        }
+    },
+
+    update: function () {
+        
          // If the bomb is out of the world (too high or too low), call the 'restart_game' function
-        if (this.bomb1.body.collideWorldBounds = false);
-            game.state.start('start');
+        //if (bomb.body.collideWorldBounds = false);
+         //   game.state.start('over');
+
+         //when clicked 
+        bomb.events.onInputDown.add(this.jump, this);
+        newBomb();
+
     },
 
     // Make the bomb jump
     jump: function () {
-        //if (this.bomb1.alive == false)
-            //return;
-
-        // Add a vertical velocity to the bomb
-        this.bomb1.body.velocity.y = -500;
-        this.bomb1.body.velocity.x = Math.Random() * 10;
-
-        // create an animation on the bombs
         
-        // And start the animation
-        //animation.start();
+        // Add a vertical velocity to the bomb
+        bomb.body.velocity.y = -500;
+        //bomb.body.velocity.x = 3 + Math.random() * 10;
+
+        score++;
+        scoreText.text = 'Score: ' + score;
+
     },
+
 };
 
 //creates game over state
